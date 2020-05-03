@@ -6,7 +6,9 @@ import { entryToReader } from '../entryUtils'
 
 export default function Home({ onAssertiveMsg, onPoliteMsg }) {
 	const [entries, setEntries] = React.useState([])
-
+	React.useEffect(() => {
+		document.title = 'Página de Demo'
+	}, [])
 	return (
 		<div className="lg:max-w-screen-lg mx-auto mt-8 md:mt-16 text-gray-800">
 			<h1 className="sr-only">Página de Demo</h1>

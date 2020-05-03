@@ -1,9 +1,17 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Link, useRouteMatch } from 'react-router-dom'
+import { Router, Switch, Route, Link, useRouteMatch } from 'react-router-dom'
+import { createBrowserHistory } from "history"
+import { wrapHistory } from "oaf-react-router"
 
 import Home from './pages/Home'
 import Carpinchos from './pages/Carpinchos'
 import Perritos from './pages/Perritos'
+
+const history = createBrowserHistory()
+const oafSettings = {
+	navigationMessage: (title) => `Navegado a ${title}.`,
+}
+wrapHistory(history, oafSettings)
 
 function App() {
 	const [assertiveMsg, setAssertiveMsg] = React.useState('')
@@ -25,7 +33,7 @@ function App() {
 
 	return (
 		<div className="bg-gray-100 min-h-screen px-4 py-4 md:pb-16">
-			<BrowserRouter>
+			<Router history={history}>
 				<header className=" lg:max-w-screen-lg mx-auto md:mt-8">
 					<nav className="flex space-x-8 md:space-x-24 font-serif">
 					<SmartLink to="/" matchExact={true}>
@@ -52,7 +60,7 @@ function App() {
 						</Route>
 					</Switch>
 				</main>
-			</BrowserRouter>
+			</Router>
 		</div>
 	)
 }
@@ -64,6 +72,7 @@ function SmartLink(props) {
 		<Link
 			to={props.to}
 			className={`${props.className || 'hover:text-gray-700 hover:underline'} ${match ? 'text-teal-700' : ''}`}
+			aria-current={match ? "page" : undefined}
 		>
 			{props.children}
 		</Link>

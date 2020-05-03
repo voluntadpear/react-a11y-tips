@@ -13,16 +13,19 @@ const defaultEntry = {
 
 export default function ({ onSubmit }) {
 	const [currentEntry, setCurrentEntry] = React.useState(defaultEntry)
+	const previousEntry = React.useRef(currentEntry)
+
 	const favoriteAnimalInput = React.useRef(null)
 
 	React.useEffect(() => {
-		if (currentEntry === defaultEntry && favoriteAnimalInput.current) {
+		if (currentEntry === defaultEntry && previousEntry.current !== defaultEntry && favoriteAnimalInput.current) {
 			favoriteAnimalInput.current.focus()
 		}
+		previousEntry.current = currentEntry
 	}, [currentEntry])
 
 	return (
-		<form className="lg:grid lg:grid-cols-2 lg:col-span-2">
+		<form className="lg:grid lg:grid-cols-2 lg:col-span-2" aria-label="Formulario de la encuesta">
 			<div className="mt-4 flex items-center">
 				<label className="w-1/2 md:w-1/3" htmlFor="animal-input">
 					Animal favorito:{' '}
