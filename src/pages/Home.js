@@ -24,7 +24,7 @@ export default function Home() {
 						onRemove={(index) => setEntries((entries) => entries.filter((entry, i) => i !== index))}
 					/>
 				) : (
-					<p className="mt-4 text-md text-gray-600">Complete la encuesta para mostrar resultados</p>
+					<p className="mt-4 text-md text-gray-800">Complete la encuesta para mostrar resultados</p>
 				)}
 			</div>
 		</div>

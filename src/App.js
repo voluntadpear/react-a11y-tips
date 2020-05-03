@@ -43,7 +43,7 @@ function SmartLink(props) {
 	return (
 		<Link
 			to={props.to}
-			className={`${props.className || 'hover:text-gray-500 hover:underline'} ${match ? 'text-teal-400' : ''}`}
+			className={`${props.className || 'hover:text-gray-700 hover:underline'} ${match ? 'text-teal-700' : ''}`}
 		>
 			{props.children}
 		</Link>

@@ -27,7 +27,7 @@ export default function QuizTable({ entries, onRemove }) {
 			</thead>
 			<tbody>
 				{entries.map((entry, i) => (
-					<tr key={i} className={`text-gray-600 ${i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-300'}`}>
+					<tr key={i} className={`text-gray-800 ${i % 2 === 0 ? 'bg-gray-100' : 'bg-gray-300'}`}>
 						<td className="py-3 text-left w-2/6 truncate pl-2 md:pl-4">{entry.animal}</td>
 						<td className="py-3 text-left w-1/6 truncate">{translationMap[entry.color]}</td>
 						<td className="py-3 text-center w-2/6 truncate">
