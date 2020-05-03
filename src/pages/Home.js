@@ -2,8 +2,9 @@ import React from 'react'
 
 import QuizForm from '../components/QuizForm'
 import QuizTable from '../components/QuizTable'
+import { entryToReader } from '../entryUtils'
 
-export default function Home() {
+export default function Home({ onAssertiveMsg, onPoliteMsg }) {
 	const [entries, setEntries] = React.useState([])
 
 	return (
@@ -13,6 +14,7 @@ export default function Home() {
 				<QuizForm
 					onSubmit={(entry) => {
 						setEntries((entries) => [...entries, entry])
+						onPoliteMsg(`${entryToReader(entry)} agregado`)
 					}}
 				/>
 			</div>
@@ -21,7 +23,11 @@ export default function Home() {
 				{entries.length > 0 ? (
 					<QuizTable
 						entries={entries}
-						onRemove={(index) => setEntries((entries) => entries.filter((entry, i) => i !== index))}
+						onRemove={(index) => {
+							const entryToRemove = entries[index]
+							onAssertiveMsg(`${entryToReader(entryToRemove)} eliminado`)
+							setEntries((entries) => entries.filter((entry, i) => i !== index))
+						}}
 					/>
 				) : (
 					<p className="mt-4 text-md text-gray-800">Complete la encuesta para mostrar resultados</p>

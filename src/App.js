@@ -6,6 +6,23 @@ import Carpinchos from './pages/Carpinchos'
 import Perritos from './pages/Perritos'
 
 function App() {
+	const [assertiveMsg, setAssertiveMsg] = React.useState('')
+	const [politeMsg, setPoliteMsg] = React.useState('')
+
+	React.useLayoutEffect(() => {
+		const assertiveEl = document.querySelector('.assertive-region')
+		if (assertiveEl) {
+			assertiveEl.textContent = assertiveMsg
+		}
+	}, [assertiveMsg])
+
+	React.useLayoutEffect(() => {
+		const politeEl = document.querySelector('.polite-region')
+		if (politeEl) {
+			politeEl.textContent = politeMsg
+		}
+	}, [politeMsg])
+
 	return (
 		<div className="bg-gray-100 min-h-screen px-4 py-4 md:pb-16">
 			<BrowserRouter>
@@ -29,7 +46,7 @@ function App() {
 						<Perritos />
 					</Route>
 					<Route path="/">
-						<Home />
+						<Home onAssertiveMsg={setAssertiveMsg} onPoliteMsg={setPoliteMsg} />
 					</Route>
 				</Switch>
 			</BrowserRouter>

@@ -1,43 +1,59 @@
 import React from 'react'
 
-export default function ({ onSubmit }) {
-	const defaultEntry = {
-		animal: '',
-		color: 'red',
-		activities: {
-			walking: false,
-			running: false,
-			swimming: false,
-			weightlifting: false,
-		},
-	}
+const defaultEntry = {
+	animal: '',
+	color: 'red',
+	activities: {
+		walking: false,
+		running: false,
+		swimming: false,
+		weightlifting: false,
+	},
+}
 
+export default function ({ onSubmit }) {
 	const [currentEntry, setCurrentEntry] = React.useState(defaultEntry)
+	const favoriteAnimalInput = React.useRef(null)
+
+	React.useEffect(() => {
+		if (currentEntry === defaultEntry && favoriteAnimalInput.current) {
+			favoriteAnimalInput.current.focus()
+		}
+	}, [currentEntry])
 
 	return (
-		<>
+		<form className="lg:grid lg:grid-cols-2 lg:col-span-2">
 			<div className="mt-4 flex items-center">
-				<span className="w-1/2 md:w-1/3">Animal favorito: </span>
+				<label className="w-1/2 md:w-1/3" htmlFor="animal-input">
+					Animal favorito:{' '}
+				</label>
 				<input
 					type="text"
+					id="animal-input"
 					className="border-2 border-gray-600 bg-gray-100 rounded pl-3 py-1 w-1/2 md:w-48 lg:w-auto"
 					value={currentEntry.animal}
 					onChange={(e) => {
 						const { value } = e.target
 						setCurrentEntry((entry) => ({ ...entry, animal: value }))
 					}}
+					required
+					ref={favoriteAnimalInput}
 				/>
 			</div>
 			<div className="mt-4 flex items-center">
-				<span className="w-1/2 md:w-1/3">Color favorito: </span>
+				<label className="w-1/2 md:w-1/3" htmlFor="color-input">
+					Color favorito:{' '}
+				</label>
 				<div className="relative w-1/2 md:w-auto">
 					<select
 						className="appearance-none w-full bg-gray-100 border-2 border-gray-600 pl-3 py-1 md:w-48 lg:w-32"
+						id="color-input"
 						value={currentEntry.color}
 						onChange={(e) => {
 							const { value } = e.target
 							setCurrentEntry((entry) => ({ ...entry, color: value }))
 						}}
+						required
 					>
 						<option value="blue">Azul</option>
 						<option value="red">Rojo</option>
@@ -55,12 +71,13 @@ export default function ({ onSubmit }) {
 					</div>
 				</div>
 			</div>
-			<div className="mt-8 flex lg:col-span-2">
-				<span className="w-1/2 md:w-1/3 lg:w-1/6">Actividades favoritas: </span>
+			<fieldset className="mt-8 lg:col-span-2">
+				<legend className="w-1/2 md:w-1/3 lg:w-1/6 float-left">Actividades favoritas: </legend>
 				<div className="flex flex-wrap w-1/2 md:w-auto">
 					<div>
 						<input
 							type="checkbox"
+							id="walking-check"
 							value="walking"
 							checked={currentEntry.activities.walking}
 							onChange={(e) => {
@@ -71,11 +88,14 @@ export default function ({ onSubmit }) {
 								}))
 							}}
 						/>
-						<span className="mx-2">Caminar </span>
+						<label className="mx-2" htmlFor="walking-check">
+							Caminar
+						</label>
 					</div>
 					<div>
 						<input
 							type="checkbox"
+							id="running-check"
 							value="running"
 							checked={currentEntry.activities.running}
 							onChange={(e) => {
@@ -86,11 +106,14 @@ export default function ({ onSubmit }) {
 								}))
 							}}
 						/>
-						<span className="mx-2">Correr </span>
+						<label className="mx-2" htmlFor="running-check">
+							Correr
+						</label>
 					</div>
 					<div>
 						<input
 							type="checkbox"
+							id="swimming-check"
 							value="swimming"
 							checked={currentEntry.activities.swimming}
 							onChange={(e) => {
@@ -101,11 +124,14 @@ export default function ({ onSubmit }) {
 								}))
 							}}
 						/>
-						<span className="mx-2">Nadar </span>
+						<label className="mx-2" htmlFor="swimming-check">
+							Nadar
+						</label>
 					</div>
 					<div>
 						<input
 							type="checkbox"
+							id="weight-check"
 							value="weightlifting"
 							checked={currentEntry.activities.weightlifting}
 							onChange={(e) => {
@@ -116,12 +142,15 @@ export default function ({ onSubmit }) {
 								}))
 							}}
 						/>
-						<span className="mx-2">Hacer pesas </span>
+						<label className="mx-2" htmlFor="weight-check">
+							Hacer pesas
+						</label>
 					</div>
 				</div>
-			</div>
+			</fieldset>
 			<div className="lg:col-span-2">
 				<button
+					type="button"
 					className="bg-teal-300 border-2 border-teal-600 px-4 py-2 rounded hover:bg-teal-400 md:mt-12"
 					onClick={() => {
 						onSubmit(currentEntry)
@@ -131,6 +160,6 @@ export default function ({ onSubmit }) {
 					Enviar
 				</button>
 			</div>
-		</>
+		</form>
 	)
 }
