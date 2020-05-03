@@ -6,15 +6,17 @@ export default function Gallery({ prefix, altMap }) {
 			{Array.from({ length: 8 })
 				.map((_, i) => `/img/${prefix}${i + 1}.jpg`)
 				.map((img, i) => (
-					<img
-						src={img}
-						alt={altMap.get(i + 1)}
-						key={i}
-						className="w-48 h-48 object-cover rounded shadow-lg hover:shadow-xl transform transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-150 hover:z-10"
-						loading="lazy"
-						width="192"
-						height="192"
-					/>
+					<figure className="hover:z-10">
+						<img
+							src={img}
+							alt={altMap.get(i + 1)}
+							key={i}
+							className="w-48 h-48 object-cover rounded shadow-lg hover:shadow-xl transform transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-150"
+							loading="lazy"
+							width="192"
+							height="192"
+						/>
+					</figure>
 				))}
 		</div>
 	)

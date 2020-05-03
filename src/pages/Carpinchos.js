@@ -14,8 +14,9 @@ export default function Carpinchos() {
 		[8, "Un carpincho descansando sobre la tierra rodeado de tortugas mientras que unos pájaros están posados encima"]
 	])
 	return (
-		<div className="mt-8 md:mt-16 lg:max-w-screen-lg mx-auto">
+		<section className="mt-8 md:mt-16 lg:max-w-screen-lg mx-auto">
+		<h1 className="sr-only">Carpinhos</h1>
 			<Gallery prefix="capy" altMap={altMap} />
-		</div>
+		</section>
 	)
 }

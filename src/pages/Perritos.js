@@ -15,8 +15,9 @@ export default function Perritos() {
 	])
 
 	return (
-		<div className="mt-8 md:mt-16 lg:max-w-screen-lg mx-auto">
+		<section className="mt-8 md:mt-16 lg:max-w-screen-lg mx-auto">
+			<h1 className="sr-only">Perritos</h1>
 			<Gallery prefix="dog" altMap={altMap} />
-		</div>
+		</section>
 	)
 }
