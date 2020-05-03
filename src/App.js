@@ -12,7 +12,9 @@ function App() {
 				<div className="flex lg:max-w-screen-lg mx-auto md:mt-8 space-x-8 md:space-x-24 font-serif">
 					<SmartLink to="/" matchExact={true}>
 						<svg viewBox="0 0 512 512" className="w-6 h-6 fill-current">
-							<path d="M16 256L256 64l96 72v-32h48v72l96 80h-48v192H328V288h-96v160H64V256z" />
+							<path d="M16 256L256 64l96 72v-32h48v72l96 80h-48v192H328V288h-96v160H64V256z">
+								<title>Inicio</title>
+							</path>
 						</svg>
 					</SmartLink>
 					<SmartLink to="/carpinchos">Carpinchos</SmartLink>
