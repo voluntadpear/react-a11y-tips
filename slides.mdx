@@ -1,0 +1,352 @@
+import { CodeSurfer } from "code-surfer"
+import myTheme from './slides-theme'
+
+import { shadesOfPurple } from "@code-surfer/themes"
+
+export const theme = myTheme
+
+# Tips de accesibilidad en React
+
+**Guillermo Peralta**
+
+**JavaScript Paraguay Meetup Mayo 2020**
+
+---
+
+## Herramientas y extensiones
+
+- [eslint-plugin-jsx-a11y](https://github.com/evcohen/eslint-plugin-jsx-a11y)
+- Axe accessibility - [Chrome](https://chrome.google.com/webstore/detail/axe/lhdoppojpmngadmnindnejefpokejbdd) [Firefox](https://addons.mozilla.org/en-US/firefox/addon/axe-devtools/)
+- Tota11y - [Chrome](https://chrome.google.com/webstore/detail/tota11y-plugin-from-khan/oedofneiplgibimfkccchnimiadcmhpe?hl=en) [Firefox](https://addons.mozilla.org/en-US/firefox/addon/tota11y-accessibility-toolkit/)
+- Accessibility Insights for Web - [Chrome](https://chrome.google.com/webstore/detail/accessibility-insights-fo/pbjjkligggfmakdaogkfomddhfmpjeni?hl=en)
+- Web Developer - [Chrome](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm) [Firefox](https://addons.mozilla.org/es/firefox/addon/web-developer/)
+- High Contrast - [Chrome](https://chrome.google.com/webstore/detail/high-contrast/djcfdncoelnlbldjfhinnjlhdjlikmph)
+- WAVE Evaluation Tool - [Chrome](https://chrome.google.com/webstore/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh) [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool/)
+- Lighthouse
+
+---
+
+## Lectores de pantalla
+
+- VoiceOver (macOS Safari)
+- ChromeVox (Extensión de Chrome)
+- NVDA (Windows Chrome/Firefox)
+- JAWS (Windows Chrome/Firefox)
+- VoiceOver (iOS Safari)
+- TalkBack (Android Chrome)
+
+---
+
+## Tip 1
+
+### Texto alternativo en imágenes
+
+---
+
+## `git checkout 02-texto-alternativo`
+
+- atributo `alt` en imágenes siempre
+  - Imágenes decorativas: `alt=""`
+  - Imágenes con contenido: `alt="Descripción"`
+  - Imágenes que funcionan como link `alt="Descripción"`
+- Element `<title>` en SVG
+
+<https://webaim.org/techniques/alttext/>
+
+
+---
+
+## Tip 2
+
+### Contraste
+
+---
+
+## `git checkout 03-contraste`
+
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- Firefox DevTools
+
+---
+
+## Tip 3
+
+### Formularios
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```jsx
+<span className="w-1/2 md:w-1/3">Animal favorito: </span>
+<input
+  type="text"
+  className="border-2 border-gray-600 bg-gray-100 rounded pl-3 py-1 w-1/2 md:w-48 lg:w-auto"
+  value={currentEntry.animal}
+  onChange={(e) => {
+    const { value } = e.target
+    setCurrentEntry((entry) => ({ ...entry, animal: value }))
+  }}
+/>
+```
+
+```jsx
+<label className="w-1/2 md:w-1/3" htmlFor="animal-input">Animal favorito: </label>
+<input
+  type="text"
+  id="animal-input"
+  className="border-2 border-gray-600 bg-gray-100 rounded pl-3 py-1 w-1/2 md:w-48 lg:w-auto"
+  value={currentEntry.animal}
+  onChange={(e) => {
+    const { value } = e.target
+    setCurrentEntry((entry) => ({ ...entry, animal: value }))
+  }}
+  required
+/>
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```jsx
+<div className="mt-8 flex lg:col-span-2">
+  <span className="w-1/2 md:w-1/3 lg:w-1/6">Actividades favoritas: </span>
+  <div className="flex flex-wrap w-1/2 md:w-auto">
+    <div>
+      <input
+        type="checkbox"
+        value="walking"
+        checked={currentEntry.activities.walking}
+        onChange={(e) => {
+          const { checked } = e.target
+          setCurrentEntry((entry) => ({
+            ...entry,
+            activities: { ...entry.activities, walking: checked },
+          }))
+        }}
+      />
+      <span className="mx-2">Caminar </span>
+    </div>
+  </div>
+</div>
+```
+
+```jsx
+<fieldset className="mt-8 lg:col-span-2">
+  <legend className="w-1/2 md:w-1/3 lg:w-1/6 float-left">Actividades favoritas: </legend>
+  <div className="flex flex-wrap w-1/2 md:w-auto">
+    <div>
+      <input
+        type="checkbox"
+        id="walking-check"
+        value="walking"
+        checked={currentEntry.activities.walking}
+        onChange={(e) => {
+          const { checked } = e.target
+          setCurrentEntry((entry) => ({
+            ...entry,
+            activities: { ...entry.activities, walking: checked },
+          }))
+        }}
+      />
+      <label className="mx-2" htmlFor="walking-check">Caminar </label>
+    </div>
+  </div>
+</fieldset>
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```js
+const favoriteAnimalInput = React.useRef(null)
+
+React.useEffect(() => {
+  if (currentEntry === defaultEntry && favoriteAnimalInput.current) {
+    favoriteAnimalInput.current.focus()
+  }
+}, [currentEntry])
+
+return (
+  //...
+  <input
+    type="text"
+    id="animal-input"
+    value={currentEntry.animal}
+    required
+    ref={favoriteAnimalInput}
+  />
+)
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```js
+export default function QuizTable({ entries, onRemove }) {
+  const delButtons = React.useRef([])
+
+  return (
+    {// ...}
+    {entries.map((entry, i) => (
+      {// ...}
+      <button
+        type="button"
+        ref={el => {delButtons.current[i] = el}}
+        onClick={() => {
+          onRemove(i)
+          focusPrevButton(i)
+        }}
+        aria-label={altTextForEntry(entry)}
+      >
+    ))}
+  )
+}
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```js
+const focusPrevButton = (i) => {
+  let idxToFocus = i - 1
+  if(i === 0 && entries.length > 1) {
+    // focus next item instead if there is
+    idxToFocus = i + 1
+  }
+
+  if(delButtons.current[idxToFocus]) {
+    delButtons.current[idxToFocus].focus()
+  }
+}
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```html
+<body>
+  <noscript>Necesitás JavaScript para ver esta página.</noscript>
+  <div id="root"></div>
+</body>
+```
+
+```html
+<body>
+  <noscript>Necesitás JavaScript para ver esta página.</noscript>
+  <div id="root"></div>
+  <div class="sr-only polite-region" aria-live="polite"></div>
+  <div class="sr-only assertive-region" aria-live="assertive"></div>
+</body>
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={shadesOfPurple}>
+
+```js
+function App() {
+	const [assertiveMsg, setAssertiveMsg] = React.useState('')
+	const [politeMsg, setPoliteMsg] = React.useState('')
+
+	React.useLayoutEffect(() => {
+		const assertiveEl = document.querySelector('.assertive-region')
+		if (assertiveEl) {
+			assertiveEl.textContent = assertiveMsg
+		}
+	}, [assertiveMsg])
+
+	React.useLayoutEffect(() => {
+		const politeEl = document.querySelector('.polite-region')
+		if (politeEl) {
+			politeEl.textContent = politeMsg
+		}
+	}, [politeMsg])
+//...
+}
+```
+
+</CodeSurfer>
+
+---
+
+### `git checkout 04-formulario`
+
+---
+
+## Tip 5
+
+### HTML Semántico
+
+---
+
+- `<header>`
+- `<nav>`
+- `<main>`
+- `<section>`
+- `<h1>`, `<h2>`, ...
+- `<figure>`
+- `<aside>`
+- `<article>`
+- `<footer>`
+
+---
+
+import img from "./html-semantico.png"
+
+<img src={img} style={{width: "80vw"}} alt="gráfico con ejemplo de una página con las distintas secciones remarcadas, como encabezado, sección principal, artículo y pie de página" />
+
+---
+
+## `git checkout 05-landmarks`
+
+---
+
+## Tip 5
+
+### Ruteo en el cliente
+
+---
+
+## `git checkout 06-ruteo`
+
+## [oaf-react-router](https://github.com/oaf-project/oaf-react-router)
+
+---
+
+## El camino a la accesibilidad
+
+1. No asustarse
+2. Aprender algunas cositas nuevas
+3. Empezar desde la base
+4. Usar las herramientas adecuadas
+5. Intentar y reintentar
+
+> *[Getting Started with Website Accessibility](https://cariefisher.com/a11y-start/)*
+
+---
+
+## Gracias 🙂 🙌🏻 🎉
+
+- <https://reactjs.org/docs/accessibility.html>
+- <https://www.matuzo.at/blog/building-the-most-inaccessible-site-possible-with-a-perfect-lighthouse-score>
+- <https://www.w3.org/TR/wai-aria-practices-1.1>
+- <https://webaim.org>
+- <https://www.w3.org/WAI/WCAG21/quickref>
