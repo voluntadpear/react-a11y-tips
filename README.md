@@ -4,6 +4,8 @@
 
 > This is a repo for a talk about accessibility tips on React for the May 2020 JavaScript Paraguay meetup.
 
+> Diapositivas en <https://a11y-jspy.netlify.app/>
+
 ## Empezar
 
 npm :
